@@ -13,6 +13,9 @@ readme = "README.md"
 license = {text = "MIT"}
 dynamic = ["version"]
 
+[project.scripts]
+pycloudflared = "pycloudflared.__main__:main"
+
 [tool.pdm.version]
 source = "file"
 path = "pycloudflared/__version__.py"

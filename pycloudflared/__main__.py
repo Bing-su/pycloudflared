@@ -13,7 +13,7 @@ def main():
     try:
         subprocess.run([info.command, *args], stdout=sys.stdout, stderr=sys.stderr)
     except KeyboardInterrupt:
-        pass
+        sys.exit(0)
 
 
 if __name__ == "__main__":
