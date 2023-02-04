@@ -1,0 +1,30 @@
+[windows]
+[windows.amd64]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe"
+
+[windows.x86]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-386.exe"
+
+[linux]
+[linux.x86_64]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64"
+
+[linux.i386]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-386"
+
+[linux.arm]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm"
+
+[linux.arm64]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64"
+
+[linux.aarch]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64"
+
+[darwin]
+[darwin.x86_64]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-amd64.tgz"
+
+[darwin.arm64]
+# arm mac dosen't have a binary yet
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-amd64.tgz"
