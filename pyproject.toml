@@ -26,6 +26,7 @@ dev = [
     "isort",
     "ruff",
     "mypy",
+    "pre-commit",
     "ipykernel",
 ]
 
