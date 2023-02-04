@@ -13,6 +13,9 @@ readme = "README.md"
 license = {text = "MIT"}
 dynamic = ["version"]
 
+[project.urls]
+repository = "https://github.com/Bing-su/pycloudflared"
+
 [project.scripts]
 pycloudflared = "pycloudflared.__main__:main"
 
