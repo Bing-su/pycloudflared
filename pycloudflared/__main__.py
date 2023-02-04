@@ -6,12 +6,13 @@ from .util import download, get_info
 
 
 def main():
+    "main cli entrypoint"
     info = get_info()
-    if not Path(info.command).exists():
+    if not Path(info.executable).exists():
         download(info)
     args = sys.argv[1:]
     try:
-        subprocess.run([info.command, *args], stdout=sys.stdout, stderr=sys.stderr)
+        subprocess.run([info.executable, *args], stdout=sys.stdout, stderr=sys.stderr)
     except KeyboardInterrupt:
         sys.exit(0)
 

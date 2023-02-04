@@ -39,9 +39,9 @@ class Info:
         root = Path(__file__).parent.parent
 
         if self.system == "darwin":
-            self.command = str(root / "cloudflared")
+            self.executable = str(root / "cloudflared")
         else:
-            self.command = str(root / self.url.split("/")[-1])
+            self.executable = str(root / self.url.split("/")[-1])
 
 
 def get_info() -> Info:
@@ -49,8 +49,26 @@ def get_info() -> Info:
 
 
 def download(info: Info | None = None) -> str:
+    """
+    Downloads the cloudflared binary from the official cloudflared github.
+
+    Parameters
+    ----------
+        info: Info | None
+            information about the system and machine architecture
+
+    Returns
+    -------
+        str
+            The path to the cloudflared excutable file
+    """
     if info is None:
         info = get_info()
+
+    if info.system == "darwin" and info.machine == "arm64":
+        print(
+            "* On a MacOS system with an Apple Silicon chip, Rosetta 2 needs to be installed, refer to this guide to learn more: https://support.apple.com/en-us/HT211861"
+        )  # noqa: E501
 
     dest = Path(__file__).parent.parent / info.url.split("/")[-1]
 
@@ -63,7 +81,7 @@ def download(info: Info | None = None) -> str:
                 shutil.copyfileobj(src, dst)
 
     if info.system == "darwin":
-        # macOS file is a tgz file
+        # macOS file is a tgz archive
         shutil.unpack_archive(dest, dest.parent)
         dest.unlink()
         excutable = dest.parent / "cloudflared"
@@ -72,3 +90,13 @@ def download(info: Info | None = None) -> str:
     excutable.chmod(0o777)
 
     return str(excutable)
+
+
+def remove_executable(info: Info | None = None) -> None:
+    """
+    Removes the cloudflared executable
+    """
+    if info is None:
+        info = get_info()
+    if Path(info.executable).exists():
+        Path(info.executable).unlink()
