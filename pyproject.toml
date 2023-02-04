@@ -1,0 +1,38 @@
+[project]
+name = "pycloudflared"
+description = "unofficial cloudflared python wrapper"
+authors = [
+    {name = "dowon", email = "ks2515@naver.com"},
+]
+dependencies = [
+    "tomli; python_version < '3.11'",
+    "tqdm",
+]
+requires-python = ">=3.7"
+readme = "README.md"
+license = {text = "MIT"}
+dynamic = ["version"]
+
+[tool.pdm.version]
+source = "file"
+path = "pycloudflared/__version__.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black",
+    "isort",
+    "ruff",
+    "mypy",
+]
+
+[build-system]
+requires = ["pdm-pep517>=1.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+select = ["A", "B", "C4", "E", "F", "I001", "N", "PT", "UP", "W"]
+ignore = ["B008", "B905", "E501"]
+unfixable = ["F401"]
