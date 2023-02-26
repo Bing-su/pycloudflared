@@ -12,7 +12,7 @@ def main():
         download(info)
     args = sys.argv[1:]
     try:
-        subprocess.run([info.executable, *args], stdout=sys.stdout, stderr=sys.stderr)
+        subprocess.run([info.executable, *args])
     except KeyboardInterrupt:
         sys.exit(0)
 

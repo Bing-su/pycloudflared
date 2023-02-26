@@ -8,8 +8,8 @@ from typing import NamedTuple
 
 from .util import download, get_info
 
-url_pattern = re.compile(r"(?P<url>https?://\S+.trycloudflare.com)")
-metrics_pattern = re.compile(r"(?P<url>127.0.0.1:\d+/metrics)")
+url_pattern = re.compile(r"(?P<url>https?://\S+\.trycloudflare\.com)")
+metrics_pattern = re.compile(r"(?P<url>127\.0\.0\.1:\d+/metrics)")
 
 
 class Urls(NamedTuple):
@@ -88,7 +88,6 @@ class TryCloudflare:
 
         atexit.register(cloudflared.terminate)
 
-        lines = 0
         tunnel_url = metrics_url = ""
 
         lines = 20
