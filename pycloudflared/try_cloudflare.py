@@ -44,8 +44,10 @@ class TryCloudflare:
 
         Returns
         -------
-        str
-            tunnel url
+        Urls (NamedTuple)
+            tunnel: str, tunnel url
+            metrics: str, metrics url
+            process: subprocess.Popen, cloudflared process Popen object
 
         Raises
         ------
