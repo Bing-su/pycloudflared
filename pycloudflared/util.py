@@ -36,7 +36,7 @@ class Info:
             raise RuntimeError(f"{self.machine!r} is not supported on {self.system}.")
 
         self.url: str = urls[self.machine]["url"]
-        root = Path(__file__).parent.parent
+        root = Path(__file__).parent
 
         if self.system == "darwin":
             self.executable = str(root / "cloudflared")
@@ -70,7 +70,7 @@ def download(info: Info | None = None) -> str:
             "* On a MacOS system with an Apple Silicon chip, Rosetta 2 needs to be installed, refer to this guide to learn more: https://support.apple.com/en-us/HT211861"
         )  # noqa: E501
 
-    dest = Path(__file__).parent.parent / info.url.split("/")[-1]
+    dest = Path(__file__).parent / info.url.split("/")[-1]
 
     with urlopen(info.url) as resp:
         total = int(resp.headers.get("Content-Length", 0))
