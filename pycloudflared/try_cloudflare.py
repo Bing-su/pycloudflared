@@ -78,10 +78,7 @@ class TryCloudflare:
                 f"127.0.0.1:{metrics_port}",
             ]
 
-        if info.system == "darwin" and info.machine == "arm64":
-            args = ["arch", "-x86_64"] + args
-
-        cloudflared = subprocess.Popen(
+        cloudflared = subprocess.Popen(  # noqa: S603
             args,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.PIPE,
@@ -94,7 +91,7 @@ class TryCloudflare:
 
         lines = 20
         for _ in range(lines):
-            line = cloudflared.stderr.readline()
+            line = cloudflared.stderr.readline()  # pyright: ignore[reportOptionalMemberAccess]
 
             url_match = url_pattern.search(line)
             metric_match = metrics_pattern.search(line)
@@ -107,7 +104,8 @@ class TryCloudflare:
                 break
 
         else:
-            raise RuntimeError("Cloudflared failed to start")
+            msg = "Cloudflared failed to start"
+            raise RuntimeError(msg)
 
         urls = Urls(tunnel_url, metrics_url, cloudflared)
         if verbose:
@@ -118,8 +116,8 @@ class TryCloudflare:
 
     @staticmethod
     def _print(tunnel_url: str, metrics_url: str) -> None:
-        print(f" * Running on {tunnel_url}")
-        print(f" * Traffic stats available on {metrics_url}")
+        print(f" * Running on {tunnel_url}")  # noqa: T201
+        print(f" * Traffic stats available on {metrics_url}")  # noqa: T201
 
     def terminate(self, port: int | str) -> None:
         """
@@ -141,7 +139,8 @@ class TryCloudflare:
             atexit.unregister(self.running[port].process.terminate)
             del self.running[port]
         else:
-            raise ValueError(f"port {port!r} is not running.")
+            msg = f"port {port!r} is not running."
+            raise ValueError(msg)
 
 
 try_cloudflare = TryCloudflare()

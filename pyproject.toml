@@ -1,17 +1,17 @@
 [project]
 name = "pycloudflared"
+version = "0.2.0"
 description = "unofficial cloudflared python wrapper"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
 authors = [
-    {name = "dowon", email = "ks2515@naver.com"},
+  { name = "dowon", email = "ks2515@naver.com" },
 ]
 dependencies = [
-    "tomli; python_version < '3.11'",
-    "tqdm",
+  "tomli; python_version < '3.11'",
+  "tqdm",
 ]
-requires-python = ">=3.7"
-readme = "README.md"
-license = {text = "MIT"}
-dynamic = ["version"]
 
 [project.urls]
 repository = "https://github.com/Bing-su/pycloudflared"
@@ -19,28 +19,46 @@ repository = "https://github.com/Bing-su/pycloudflared"
 [project.scripts]
 pycloudflared = "pycloudflared.__main__:main"
 
-[tool.pdm.version]
-source = "file"
-path = "pycloudflared/__version__.py"
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "black",
-    "isort",
-    "ruff",
-    "mypy",
-    "pre-commit",
-    "ipykernel",
-]
+[dependency-groups]
+dev = ["tomli"]
 
 [build-system]
-requires = ["pdm-pep517>=1.0"]
-build-backend = "pdm.pep517.api"
+requires = ["uv_build"]
+build-backend = "uv_build"
 
-[tool.isort]
-profile = "black"
-
-[tool.ruff]
-select = ["A", "B", "C4", "E", "F", "I001", "N", "PT", "UP", "W"]
-ignore = ["B008", "B905", "E501"]
+[tool.ruff.lint]
+select = [
+  "A",
+  "B",
+  "C4",
+  "C90",
+  "E",
+  "EM",
+  "F",
+  "FA",
+  "FAST",
+  "FURB",
+  "I001",
+  "ISC",
+  "N",
+  "PD",
+  "PERF",
+  "PIE",
+  "PL",
+  "PT",
+  "PTH",
+  "RET",
+  "RUF",
+  "S",
+  "SIM",
+  "T20",
+  "TC",
+  "TRY",
+  "UP",
+  "W",
+]
+ignore = ["B905", "E501"]
 unfixable = ["F401"]
+
+[tool.uv.build-backend]
+module-root = ""

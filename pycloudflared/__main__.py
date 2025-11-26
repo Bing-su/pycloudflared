@@ -12,7 +12,7 @@ def main():
         download(info)
     args = sys.argv[1:]
     try:
-        subprocess.run([info.executable, *args])
+        subprocess.run([info.executable, *args], check=True)  # noqa: S603
     except KeyboardInterrupt:
         sys.exit(0)
 

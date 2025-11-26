@@ -26,5 +26,4 @@ url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudf
 url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-amd64.tgz"
 
 [darwin.arm64]
-# arm mac dosen't have a binary yet
-url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-amd64.tgz"
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-arm64.tgz"

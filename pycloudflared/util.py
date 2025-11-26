@@ -29,11 +29,13 @@ class Info:
         self.machine = self.machine.lower()
 
         if self.system not in download_url:
-            raise RuntimeError(f"{self.system!r} is not supported.")
+            msg = f"{self.system!r} is not supported."
+            raise RuntimeError(msg)
 
         urls = download_url[self.system]
         if self.machine not in urls:
-            raise RuntimeError(f"{self.machine!r} is not supported on {self.system}.")
+            msg = f"{self.machine!r} is not supported on {self.system}."
+            raise RuntimeError(msg)
 
         self.url: str = urls[self.machine]["url"]
         root = Path(__file__).parent
@@ -65,20 +67,14 @@ def download(info: Info | None = None) -> str:
     if info is None:
         info = get_info()
 
-    if info.system == "darwin" and info.machine == "arm64":
-        print(
-            "* On a MacOS system with an Apple Silicon chip, Rosetta 2 needs to be installed, refer to this guide to learn more: https://support.apple.com/en-us/HT211861"
-        )  # noqa: E501
-
     dest = Path(__file__).parent / info.url.split("/")[-1]
 
-    with urlopen(info.url) as resp:
+    with urlopen(info.url) as resp:  # noqa: S310
         total = int(resp.headers.get("Content-Length", 0))
         with tqdm.wrapattr(
             resp, "read", total=total, desc="Download cloudflared..."
-        ) as src:
-            with dest.open("wb") as dst:
-                shutil.copyfileobj(src, dst)
+        ) as src, dest.open("wb") as dst:
+            shutil.copyfileobj(src, dst)
 
     if info.system == "darwin":
         # macOS file is a tgz archive
