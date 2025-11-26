@@ -1,6 +1,6 @@
 [project]
 name = "pycloudflared"
-version = "0.2.0"
+version = "0.3.0"
 description = "unofficial cloudflared python wrapper"
 readme = "README.md"
 requires-python = ">=3.8"
