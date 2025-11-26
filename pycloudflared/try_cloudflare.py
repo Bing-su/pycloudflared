@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import atexit
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -8,8 +9,14 @@ from typing import NamedTuple
 
 from .util import download, get_info
 
+DEFAULT_LINES_TO_CHECK = 50
+
 url_pattern = re.compile(r"(?P<url>https?://\S+\.trycloudflare\.com)")
 metrics_pattern = re.compile(r"(?P<url>127\.0\.0\.1:\d+/metrics)")
+
+
+def get_lines_to_check() -> int:
+    return int(os.getenv("PYCLOUDFLARED_LINES_TO_CHECK", DEFAULT_LINES_TO_CHECK))
 
 
 class Urls(NamedTuple):
@@ -89,7 +96,7 @@ class TryCloudflare:
 
         tunnel_url = metrics_url = ""
 
-        lines = 20
+        lines = get_lines_to_check()
         for _ in range(lines):
             line = cloudflared.stderr.readline()  # pyright: ignore[reportOptionalMemberAccess]
 

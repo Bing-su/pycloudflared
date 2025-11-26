@@ -57,7 +57,7 @@ select = [
   "UP",
   "W",
 ]
-ignore = ["B905", "E501"]
+ignore = ["B905", "E501", "PLW1508"]
 unfixable = ["F401"]
 
 [tool.uv.build-backend]
