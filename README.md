@@ -65,9 +65,14 @@ Since there is no binary for arm mac, you may need Rosetta 2.
 ### try_cloudflared
 
 ```py
+import contextlib
+
 from pycloudflared import try_cloudflare
 
-try_cloudflare(port=7860)
+tunnel_urls = try_cloudflare.tunnel(8000, 'http')
+
+with contextlib.suppress(KeyboardInterrupt):
+    input("\nPress [Enter] to exit ")
 ```
 
 A simple function to run trycloudflare within python.

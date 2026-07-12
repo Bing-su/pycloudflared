@@ -25,6 +25,12 @@ class Info:
     machine: str
 
     def __post_init__(self):
+        cloudflared_path = shutil.which("cloudflared")
+
+        if cloudflared_path is not None:
+            self.executable = cloudflared_path
+            return
+
         self.system = self.system.lower()
         self.machine = self.machine.lower()
 
@@ -38,6 +44,7 @@ class Info:
             raise RuntimeError(msg)
 
         self.url: str = urls[self.machine]["url"]
+
         root = Path(__file__).parent
 
         if self.system == "darwin":
