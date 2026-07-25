@@ -5,7 +5,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, NoReturn
 
 from .util import download, get_info
 
@@ -94,11 +94,36 @@ class TryCloudflare:
 
         atexit.register(cloudflared.terminate)
 
-        tunnel_url = metrics_url = ""
+        tunnel_url, metrics_url, output = self._read_urls(cloudflared)
+        if not (tunnel_url and metrics_url):
+            self._raise_start_failure(cloudflared, output)
 
-        lines = get_lines_to_check()
-        for _ in range(lines):
-            line = cloudflared.stderr.readline()  # pyright: ignore[reportOptionalMemberAccess]
+        urls = Urls(tunnel_url, metrics_url, cloudflared)
+        if verbose:
+            self._print(urls.tunnel, urls.metrics)
+
+        self.running[port] = urls
+        return urls
+
+    @staticmethod
+    def _read_urls(process: subprocess.Popen) -> tuple[str, str, list[str]]:
+        """Read cloudflared's stderr until both urls are found or it ends.
+
+        Returns the tunnel url, the metrics url and the captured stderr lines.
+        A url may be empty if it was not seen before the process ended or the
+        line budget was exhausted.
+        """
+        tunnel_url = metrics_url = ""
+        output: list[str] = []
+
+        for _ in range(get_lines_to_check()):
+            line = process.stderr.readline()  # pyright: ignore[reportOptionalMemberAccess]
+            if not line:
+                # An empty string means stderr reached EOF: cloudflared exited
+                # before printing the url. Stop early instead of spinning over
+                # the remaining iterations reading nothing.
+                break
+            output.append(line)
 
             url_match = url_pattern.search(line)
             metric_match = metrics_pattern.search(line)
@@ -110,16 +135,24 @@ class TryCloudflare:
             if tunnel_url and metrics_url:
                 break
 
-        else:
-            msg = "Cloudflared failed to start"
-            raise RuntimeError(msg)
+        return tunnel_url, metrics_url, output
 
-        urls = Urls(tunnel_url, metrics_url, cloudflared)
-        if verbose:
-            self._print(urls.tunnel, urls.metrics)
+    @staticmethod
+    def _raise_start_failure(
+        process: subprocess.Popen, output: list[str]
+    ) -> NoReturn:
+        # The process is useless without its urls; clean it up rather than
+        # leaking it until interpreter exit.
+        process.terminate()
+        atexit.unregister(process.terminate)
 
-        self.running[port] = urls
-        return urls
+        captured = "".join(output).strip()
+        msg = "Cloudflared failed to start."
+        if captured:
+            # Surface cloudflared's own output so the caller can diagnose the
+            # failure (bad port, network error, unsupported arch, ...).
+            msg = f"Cloudflared failed to start. cloudflared output:\n{captured}"
+        raise RuntimeError(msg)
 
     @staticmethod
     def _print(tunnel_url: str, metrics_url: str) -> None:
