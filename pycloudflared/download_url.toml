@@ -21,6 +21,9 @@ url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudf
 [linux.aarch]
 url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64"
 
+[linux.aarch64]
+url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64"
+
 [darwin]
 [darwin.x86_64]
 url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-amd64.tgz"
